@@ -23,22 +23,22 @@ jobs:
         run: npm ci
 
       - name: Run Tests
-        run: npm test
+        run: xvfb-run -a npm test
 
       - name: Package Extension (.vsix)
         run: npx @vscode/vsce package -o latex-vertical-comment-formatter.vsix
 
       - name: Publish to VS Code Marketplace
-        if: env.VSCE_PAT != ''
+        if: ${{ secrets.VSCE_PAT != '' }}
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: npx @vscode/vsce publish -p $VSCE_PAT
+        run: npx @vscode/vsce publish -i latex-vertical-comment-formatter.vsix -p $VSCE_PAT --skip-duplicate
 
       - name: Publish to Open VSX Registry
-        if: env.OVSX_PAT != ''
+        if: ${{ secrets.OVSX_PAT != '' }}
         env:
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
-        run: npx ovsx publish latex-vertical-comment-formatter.vsix -p $OVSX_PAT
+        run: npx ovsx publish latex-vertical-comment-formatter.vsix -p $OVSX_PAT --skip-duplicate
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1

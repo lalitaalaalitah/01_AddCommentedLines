@@ -3,7 +3,7 @@
 **Author:** `lalitaalaalitah`  
 **Website:** [https://www.lalitaalaalitah.com](https://www.lalitaalaalitah.com)  
 **GitHub:** [https://github.com/lalitaalaalitah](https://github.com/lalitaalaalitah)  
-**Version:** `1.0.0`
+**Version:** `1.2.0`
 
 ---
 
@@ -17,7 +17,7 @@
 2. Open VS Code or Antigravity IDE.
 3. Open the Extensions sidebar (`Cmd+Shift+X` or `Ctrl+Shift+X`).
 4. Click the `...` (Views and More Actions) menu in the top-right corner of the Extensions panel.
-5. Select **Install from VSIX...** and choose `latex-vertical-comment-formatter-1.0.0.vsix`.
+5. Select **Install from VSIX...** and choose `latex-vertical-comment-formatter-1.2.0.vsix`.
 
 ---
 
@@ -35,8 +35,7 @@ npx mocha --ui tdd out/test/suite/formatter.test.js
 ```
 
 ### Method 2: Interactive Testing in VS Code / Antigravity IDE (F5 Debugging)
-1. Open the project directory in VS Code / Antigravity IDE:
-   `/Volumes/Cablet_WD_2TB_20251206/05_Development/Github/14_DevelopmentEnvs/01_CodeEditors/00_VSCode/07_VSCode_LaTeXExtensions/01_AddCommentedLines`
+1. Open the project root directory in VS Code / Antigravity IDE.
 2. Press **`F5`** (or go to **Run & Debug** > **Launch Extension**). This opens a fresh **Extension Development Host** window.
 3. In the Extension Development Host window, open or create any `.tex` file.
 4. Paste sample TeX text:
@@ -56,7 +55,7 @@ npx mocha --ui tdd out/test/suite/formatter.test.js
    ```
 2. Open Extensions view (`Cmd+Shift+X` / `Ctrl+Shift+X`).
 3. Click **`...`** (top right) > **Install from VSIX...**
-4. Select `latex-vertical-comment-formatter-1.0.0.vsix`.
+4. Select `latex-vertical-comment-formatter-1.2.0.vsix`.
 
 ---
 

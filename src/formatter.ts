@@ -36,6 +36,35 @@ const PSTART_PEND_PATTERN = /^\s*\\(pstart|pend)%?\s*$/i;
 const ENV_BOUNDARY_PATTERN = /^\s*\\(begin|end)\{(?:vyAkhyA|Jnanankusham|TikaA|TikaB|Pathabhedah|Ardhashlokanukramanika|[A-Za-z0-9_]+)\}/i;
 const STRUCTURAL_CMD_PATTERN = /^\s*\\(section|subsection|subsubsection|shlokaH|granthaH)\b/i;
 
+// Patterns for filtering out non-content macro and master project driver files
+const MACRO_FILENAME_PATTERN = /(?:^|[\/_\-])macros?(?:[\/_\-]|\.tex$)|02_macros_|macros\.tex$/i;
+const PROJECT_FILENAME_PATTERN = /03_AllTexFiles\.tex$|master\.tex$|main\.tex$|_project_launch/i;
+
+/**
+ * Checks if a .tex file is a valid content/body TeX file.
+ * Excludes macro definitions and root project driver files without body content.
+ */
+export function isContentTexDocument(fileName: string, content: string, patterns?: FormatterTargetPatterns): boolean {
+  const name = fileName.split(/[/\\]/).pop()?.toLowerCase() || "";
+
+  if (MACRO_FILENAME_PATTERN.test(name) || PROJECT_FILENAME_PATTERN.test(name)) {
+    return false;
+  }
+
+  const lines = content.split(/\r?\n/);
+  for (const line of lines) {
+    if (isTargetLine(line, patterns)) {
+      return true;
+    }
+  }
+
+  if (content.includes("\\documentclass") || content.includes("\\usepackage") || content.includes("\\newcommand")) {
+    return false;
+  }
+
+  return content.trim().length > 0;
+}
+
 /**
  * Checks if a line is empty/whitespace-only OR contains ONLY '%' with optional leading whitespace.
  */
@@ -43,6 +72,7 @@ export function isBlankOrPureCommentLine(line: string): boolean {
   const stripped = line.trim();
   return stripped === "" || stripped === "%";
 }
+
 
 /**
  * Checks if a line contains ONLY '%' with optional leading whitespace.

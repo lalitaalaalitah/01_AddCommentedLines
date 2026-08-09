@@ -1,5 +1,7 @@
 import * as assert from "assert";
-import { formatLatexComments, isTargetLine, isPureCommentLine } from "../../formatter";
+import { formatLatexComments, isTargetLine, isPureCommentLine, isContentTexDocument } from "../../formatter";
+
+
 
 suite("LaTeX Vertical Comment Formatter Test Suite", () => {
 
@@ -68,6 +70,9 @@ suite("LaTeX Vertical Comment Formatter Test Suite", () => {
     assert.strictEqual(result, expected);
   });
 
-
+  test("isContentTexDocument correctly filters out macro and driver files while allowing content files", () => {
+    assert.strictEqual(isContentTexDocument("02_macros_GYAnANkusham.tex", "\\newcommand{\\foo}{bar}"), false);
+    assert.strictEqual(isContentTexDocument("03_AllTexFiles.tex", "\\documentclass{book}\\input{shloka}"), false);
+    assert.strictEqual(isContentTexDocument("shlokaH_1.tex", "\\pstart%\nText\n\\pend%"), true);
+  });
 });
-

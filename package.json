@@ -2,7 +2,8 @@
   "name": "latex-vertical-comment-formatter",
   "displayName": "LaTeX Vertical Comment Formatter",
   "description": "Enforces exact 3-commented-line (%) vertical block structure around structural tags, TeX markers, LaTeX environments, and section commands.",
-  "version": "1.1.0",
+  "version": "1.2.0",
+
   "publisher": "lalitaalaalitah",
   "author": {
     "name": "lalitaalaalitah",

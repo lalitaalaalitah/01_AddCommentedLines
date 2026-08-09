@@ -2,7 +2,14 @@
 
 All notable changes to the **LaTeX Vertical Comment Formatter** extension will be documented in this file.
 
+## [1.2.0] - 2026-08-09
+
+### Added
+- Smart Batch Directory Filtering: Recursively processes content/body TeX files while automatically skipping non-content macro definitions (`02_macros_*.tex`) and root project driver files (`03_AllTexFiles.tex`).
+- Cross-Referencing Documentation & Architecture: Synchronized companion project architecture linking VS Code Extension and Python CLI script.
+
 ## [1.1.0] - 2026-08-09
+
 
 ### Added
 - Secondary Post-Formatter execution: Option to kick a custom VS Code command (e.g. `latex-workshop.indent`, `editor.action.reindentlines`) or external CLI tool (e.g. `latexindent -w {file}`) automatically after vertical comment formatting.

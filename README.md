@@ -35,8 +35,10 @@ This extension automatically inserts, normalizes, and enforces a configurable nu
 - **Format on Save & Manual Format:** Seamlessly format files automatically when saving (`editor.formatOnSave` / `latexVerticalCommentFormatter.formatOnSave`) or manually via shortcut/command palette.
 - **Preserves Indentation:** Adapts to line indentation so `%` comments align with surrounding code structure.
 - **Guaranteed Idempotency:** Running formatting multiple times yields the exact same clean output without accumulating redundant duplicate `%` lines.
-- **Batch Workspace Formatting:** Format all `.tex` files across your workspace in a single click with progress reporting.
-- **Devanagari & Roman Digit Support:** Recognizes both ASCII (`%<*1>%`) and Devanagari (`%<*१>%`) tags.
+- **Smart Batch Workspace Formatting:** Format all content `.tex` files across your workspace in a single click with progress reporting, automatically skipping non-content macro definitions (`02_macros_*.tex`) and root project driver files (`03_AllTexFiles.tex`).
+- **Secondary Post-Formatter Execution:** Optionally kick a custom VS Code command (e.g. `latex-workshop.indent`) or CLI tool (e.g. `latexindent -w {file}`) automatically after formatting.
+- **Companion CLI Python Script:** This extension is tightly coupled with the official [LaTeX Project Helpers CLI Script](https://github.com/lalitaalaalitah/21_LaTeXProjectHelpers) (`latex_vertical_comment_formatter.py`), sharing the exact same core formatting engine and smart batch filtering logic.
+
 
 ---
 

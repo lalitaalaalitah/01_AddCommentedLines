@@ -5,12 +5,14 @@
  * Author: lalitaalaalitah
  * Website: https://www.lalitaalaalitah.com
  * GitHub: https://github.com/lalitaalaalitah
- * Version: 1.1.0
+ * Version: 1.2.0
  */
+
 
 import * as vscode from "vscode";
 import { exec } from "child_process";
-import { formatLatexComments, FormatterOptions } from "./formatter";
+import { formatLatexComments, isContentTexDocument, FormatterOptions } from "./formatter";
+
 
 /**
  * Reads user configuration settings for the extension.
@@ -227,7 +229,13 @@ export function activate(context: vscode.ExtensionContext) {
             try {
               const doc = await vscode.workspace.openTextDocument(fileUri);
               const text = doc.getText();
+
+              if (!isContentTexDocument(fileUri.fsPath, text, options.targetPatterns)) {
+                continue;
+              }
+
               const formatted = formatLatexComments(text, options);
+
 
               if (text !== formatted) {
                 const workEdit = new vscode.WorkspaceEdit();
