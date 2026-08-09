@@ -2,7 +2,18 @@
 
 All notable changes to the **LaTeX Vertical Comment Formatter** extension will be documented in this file.
 
+## [1.1.0] - 2026-08-09
+
+### Added
+- Secondary Post-Formatter execution: Option to kick a custom VS Code command (e.g. `latex-workshop.indent`, `editor.action.reindentlines`) or external CLI tool (e.g. `latexindent -w {file}`) automatically after vertical comment formatting.
+- Configurable settings: `latexVerticalCommentFormatter.enablePostFormat` and `latexVerticalCommentFormatter.postFormatCommand`.
+- CLI `-p` / `--post-command` flag and interactive menu option in base Python script `latex_vertical_comment_formatter.py`.
+
+### Fixed
+- Fixed unwanted blank line gaps between adjacent target comment blocks in both Python script and VS Code Extension.
+
 ## [1.0.0] - 2026-08-09
+
 
 ### Added
 - Initial release of LaTeX Vertical Comment Formatter for VS Code & Antigravity IDE.

@@ -94,6 +94,8 @@ Add to your `.vscode/settings.json` or global user settings:
 {
   "latexVerticalCommentFormatter.commentCount": 3,
   "latexVerticalCommentFormatter.formatOnSave": true,
+  "latexVerticalCommentFormatter.enablePostFormat": true,
+  "latexVerticalCommentFormatter.postFormatCommand": "latex-workshop.indent",
   "latexVerticalCommentFormatter.targetPatterns": {
     "tagMarkers": true,
     "pstartPend": true,
@@ -102,6 +104,9 @@ Add to your `.vscode/settings.json` or global user settings:
   }
 }
 ```
+
+*Note: `postFormatCommand` accepts either a VS Code command ID (e.g. `"latex-workshop.indent"`) or an external CLI command (e.g. `"latexindent -w {file}"`).*
+
 
 ---
 

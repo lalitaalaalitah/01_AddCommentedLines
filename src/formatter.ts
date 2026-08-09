@@ -37,6 +37,14 @@ const ENV_BOUNDARY_PATTERN = /^\s*\\(begin|end)\{(?:vyAkhyA|Jnanankusham|TikaA|T
 const STRUCTURAL_CMD_PATTERN = /^\s*\\(section|subsection|subsubsection|shlokaH|granthaH)\b/i;
 
 /**
+ * Checks if a line is empty/whitespace-only OR contains ONLY '%' with optional leading whitespace.
+ */
+export function isBlankOrPureCommentLine(line: string): boolean {
+  const stripped = line.trim();
+  return stripped === "" || stripped === "%";
+}
+
+/**
  * Checks if a line contains ONLY '%' with optional leading whitespace.
  */
 export function isPureCommentLine(line: string): boolean {
@@ -67,7 +75,8 @@ export function isTargetLine(line: string, patterns?: FormatterTargetPatterns): 
 
 /**
  * Formats content to ensure exactly `commentCount` commented lines (%)
- * exist before and after every target marker/command.
+ * exist before and after every target marker/command, stripping any unwanted
+ * blank lines around comment blocks.
  *
  * Idempotent: repeating formatting yields the exact same clean output.
  */
@@ -100,8 +109,8 @@ export function formatLatexComments(content: string, options?: FormatterOptions)
       const indent = line.substring(0, indentLength);
       const commentLine = `${indent}%`;
 
-      // Remove existing pure comment lines directly before this target in resultLines
-      while (resultLines.length > 0 && isPureCommentLine(resultLines[resultLines.length - 1])) {
+      // Remove existing pure comment lines and blank lines directly before this target in resultLines
+      while (resultLines.length > 0 && isBlankOrPureCommentLine(resultLines[resultLines.length - 1])) {
         resultLines.pop();
       }
 
@@ -113,9 +122,9 @@ export function formatLatexComments(content: string, options?: FormatterOptions)
       // Insert the target line itself
       resultLines.push(line);
 
-      // Skip any pure comment lines directly following this target in input lines
+      // Skip any pure comment lines or blank lines directly following this target in input lines
       i++;
-      while (i < numLines && isPureCommentLine(lines[i])) {
+      while (i < numLines && isBlankOrPureCommentLine(lines[i])) {
         i++;
       }
 
@@ -137,3 +146,4 @@ export function formatLatexComments(content: string, options?: FormatterOptions)
 
   return output;
 }
+

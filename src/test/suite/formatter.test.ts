@@ -60,4 +60,14 @@ suite("LaTeX Vertical Comment Formatter Test Suite", () => {
     assert.strictEqual(result.includes("%<*१>%"), true);
     assert.strictEqual(result.includes("%</१>%"), true);
   });
+
+  test("formatLatexComments removes unwanted blank lines between comment blocks", () => {
+    const input = `\\begin{Jnanankusham}\n\n    %<*२>%\n\n    \\pstart%\n\n        \\shlokaH{\n            Text\n        }\n\n    \\pend%\n    %</२>%\n\n\\end{Jnanankusham}`;
+    const expected = `%\n%\n%\n\\begin{Jnanankusham}\n    %\n    %\n    %\n    %<*२>%\n    %\n    %\n    %\n    \\pstart%\n        %\n        %\n        %\n        \\shlokaH{\n        %\n        %\n        %\n            Text\n        }\n    %\n    %\n    %\n    \\pend%\n    %\n    %\n    %\n    %</२>%\n%\n%\n%\n\\end{Jnanankusham}\n%\n%\n%`;
+    const result = formatLatexComments(input, { commentCount: 3 });
+    assert.strictEqual(result, expected);
+  });
+
+
 });
+

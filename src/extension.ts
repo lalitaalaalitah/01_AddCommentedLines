@@ -5,10 +5,11 @@
  * Author: lalitaalaalitah
  * Website: https://www.lalitaalaalitah.com
  * GitHub: https://github.com/lalitaalaalitah
- * Version: 1.0.0
+ * Version: 1.1.0
  */
 
 import * as vscode from "vscode";
+import { exec } from "child_process";
 import { formatLatexComments, FormatterOptions } from "./formatter";
 
 /**
@@ -38,6 +39,50 @@ function isTexDocument(document: vscode.TextDocument): boolean {
   return document.fileName.endsWith(".tex") || document.fileName.endsWith(".sty") || document.fileName.endsWith(".cls");
 }
 
+/**
+ * Executes configured post-formatter VS Code command or CLI tool.
+ */
+async function runPostFormatter(document: vscode.TextDocument) {
+  const config = vscode.workspace.getConfiguration("latexVerticalCommentFormatter");
+  const enablePostFormat = config.get<boolean>("enablePostFormat", false);
+  const postFormatCommand = config.get<string>("postFormatCommand", "").trim();
+
+  if (!enablePostFormat || !postFormatCommand) {
+    return;
+  }
+
+  // Check if postFormatCommand is a registered VS Code command
+  const allCommands = await vscode.commands.getCommands(true);
+  if (allCommands.includes(postFormatCommand)) {
+    try {
+      await vscode.commands.executeCommand(postFormatCommand);
+      vscode.window.setStatusBarMessage(`Executed post-formatter command: ${postFormatCommand}`, 3000);
+    } catch (err) {
+      vscode.window.showErrorMessage(`Post-formatter VS Code command '${postFormatCommand}' failed: ${err}`);
+    }
+    return;
+  }
+
+  // Otherwise treat as CLI shell command
+  let cmd = postFormatCommand;
+  const filePath = document.fileName;
+  if (cmd.includes("{file}")) {
+    cmd = cmd.replace(/{file}/g, `"${filePath}"`);
+  } else if (cmd.includes("%f")) {
+    cmd = cmd.replace(/%f/g, `"${filePath}"`);
+  } else {
+    cmd = `${cmd} "${filePath}"`;
+  }
+
+  exec(cmd, (error, stdout, stderr) => {
+    if (error) {
+      vscode.window.showWarningMessage(`Post-formatter CLI command failed: ${error.message}`);
+    } else {
+      vscode.window.setStatusBarMessage(`Post-formatter CLI completed for ${document.fileName}`, 3000);
+    }
+  });
+}
+
 export function activate(context: vscode.ExtensionContext) {
   const selector: vscode.DocumentSelector = [
     { scheme: "file", language: "latex" },
@@ -53,6 +98,10 @@ export function activate(context: vscode.ExtensionContext) {
       const text = document.getText();
       const options = getFormatterOptions();
       const formatted = formatLatexComments(text, options);
+
+      setTimeout(() => {
+        runPostFormatter(document);
+      }, 200);
 
       if (text === formatted) {
         return [];
@@ -72,6 +121,10 @@ export function activate(context: vscode.ExtensionContext) {
       const text = document.getText(range);
       const options = getFormatterOptions();
       const formatted = formatLatexComments(text, options);
+
+      setTimeout(() => {
+        runPostFormatter(document);
+      }, 200);
 
       if (text === formatted) {
         return [];
@@ -110,6 +163,8 @@ export function activate(context: vscode.ExtensionContext) {
       } else {
         vscode.window.showInformationMessage("No formatting changes needed.");
       }
+
+      await runPostFormatter(document);
     }
   );
 
@@ -132,6 +187,8 @@ export function activate(context: vscode.ExtensionContext) {
         await editor.edit((editBuilder) => editBuilder.replace(range, formatted));
         vscode.window.showInformationMessage("Selection formatted successfully.");
       }
+
+      await runPostFormatter(editor.document);
     }
   );
 
@@ -183,6 +240,8 @@ export function activate(context: vscode.ExtensionContext) {
                 await doc.save();
                 updatedCount++;
               }
+
+              await runPostFormatter(doc);
             } catch (err) {
               console.error(`Error formatting ${fileUri.fsPath}:`, err);
             }
@@ -221,6 +280,10 @@ export function activate(context: vscode.ExtensionContext) {
       );
       event.waitUntil(Promise.resolve([vscode.TextEdit.replace(fullRange, formatted)]));
     }
+
+    setTimeout(() => {
+      runPostFormatter(document);
+    }, 200);
   });
 
   context.subscriptions.push(
@@ -234,3 +297,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {}
+

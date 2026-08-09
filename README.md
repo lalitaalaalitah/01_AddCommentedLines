@@ -100,10 +100,13 @@ Customize extension behavior in VS Code settings (`settings.json`):
 | :--- | :--- | :--- |
 | `latexVerticalCommentFormatter.commentCount` | `3` | Number of commented lines (`%`) to insert before and after target markers. |
 | `latexVerticalCommentFormatter.formatOnSave` | `true` | Automatically format LaTeX files when saved. |
+| `latexVerticalCommentFormatter.enablePostFormat` | `false` | Enable executing secondary post-formatter command after vertical comment formatting. |
+| `latexVerticalCommentFormatter.postFormatCommand` | `""` | Secondary VS Code command ID (e.g. `latex-workshop.indent`) or CLI command (e.g. `latexindent -w {file}`) to execute after formatting. |
 | `latexVerticalCommentFormatter.targetPatterns.tagMarkers` | `true` | Include tag markers (e.g. `%<*1>%`, `%</1>%`, `%<*१>%`, `%</१>`). |
 | `latexVerticalCommentFormatter.targetPatterns.pstartPend` | `true` | Include `\pstart%` and `\pend%` block markers. |
 | `latexVerticalCommentFormatter.targetPatterns.environments` | `true` | Include `\begin{...}` and `\end{...}` boundaries. |
 | `latexVerticalCommentFormatter.targetPatterns.structuralCommands` | `true` | Include `\section`, `\subsection`, `\shlokaH`, `\granthaH`. |
+
 
 ---
 
