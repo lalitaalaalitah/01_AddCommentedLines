@@ -1,0 +1,117 @@
+{
+  "name": "latex-vertical-comment-formatter",
+  "displayName": "LaTeX Vertical Comment Formatter",
+  "description": "Enforces exact 3-commented-line (%) vertical block structure around structural tags, TeX markers, LaTeX environments, and section commands.",
+  "version": "1.0.0",
+  "publisher": "lalitaalaalitah",
+  "author": {
+    "name": "lalitaalaalitah",
+    "url": "https://www.lalitaalaalitah.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/lalitaalaalitah/01_AddCommentedLines#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lalitaalaalitah/01_AddCommentedLines.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lalitaalaalitah/01_AddCommentedLines/issues"
+  },
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Formatters",
+    "Other"
+  ],
+  "keywords": [
+    "LaTeX",
+    "Sanskrit",
+    "Comment",
+    "Formatter",
+    "Critical Edition",
+    "pstart",
+    "pend",
+    "TeX"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:latex",
+    "onLanguage:tex",
+    "onLanguage:doctex"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "latex-vertical-comment-formatter.formatDocument",
+        "title": "LaTeX Formatter: Format Current Document"
+      },
+      {
+        "command": "latex-vertical-comment-formatter.formatSelection",
+        "title": "LaTeX Formatter: Format Selection"
+      },
+      {
+        "command": "latex-vertical-comment-formatter.formatWorkspace",
+        "title": "LaTeX Formatter: Format All TeX Files in Workspace"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "LaTeX Vertical Comment Formatter",
+      "properties": {
+        "latexVerticalCommentFormatter.commentCount": {
+          "type": "number",
+          "default": 3,
+          "description": "Number of commented lines (%) to insert before and after target markers/commands."
+        },
+        "latexVerticalCommentFormatter.formatOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically format LaTeX document on save."
+        },
+        "latexVerticalCommentFormatter.targetPatterns.tagMarkers": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include tag markers (e.g., %<*1>%, %</1>%, %<*१>%, %</१>%)."
+        },
+        "latexVerticalCommentFormatter.targetPatterns.pstartPend": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include \\pstart% and \\pend% block markers."
+        },
+        "latexVerticalCommentFormatter.targetPatterns.environments": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include \\begin{...} and \\end{...} boundaries."
+        },
+        "latexVerticalCommentFormatter.targetPatterns.structuralCommands": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include structural commands (\\section, \\subsection, \\subsubsection, \\shlokaH, \\granthaH)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -w -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js",
+    "package": "npx @vscode/vsce package",
+    "publish:vsce": "npx @vscode/vsce publish",
+    "publish:ovsx": "npx ovsx publish"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.7",
+    "@types/vscode": "^1.90.0",
+    "@vscode/test-electron": "^2.3.9",
+    "@vscode/vsce": "^3.0.0",
+    "glob": "^10.3.10",
+    "mocha": "^10.4.0",
+    "ovsx": "^0.9.1",
+    "typescript": "^5.4.5"
+  }
+}
